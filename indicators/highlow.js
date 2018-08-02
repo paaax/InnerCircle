@@ -17,10 +17,6 @@ indicator.prototype.setLevels = function(candles){
 }
 
 indicator.prototype.updateLevel = function(element){
-    if(element.close > element.open)
-        this.lvlHigh = element.high;
-    else if(element.close < element.open)
-        this.lvlLow = element.low;
 
     if(element.high > this.maxHigh){
         this.maxHigh = element.high;
@@ -32,6 +28,11 @@ indicator.prototype.updateLevel = function(element){
         this.highToBreak = this.lvlHigh;
         this.side = 'long';
     }
+
+    if(element.close > element.open)
+        this.lvlHigh = element.high;
+    else if(element.close < element.open)
+        this.lvlLow = element.low;    
 }
 
 module.exports = indicator;
