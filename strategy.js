@@ -16,7 +16,7 @@ strat.onNewCandle = function(candles){
                 all: [{
                     fact: 'support',
                     operator: 'lessThan',
-                    value: HighLow.lvlLow
+                    value: HighLow.lowToBreak
                 }]
             },
             event: {
@@ -35,7 +35,7 @@ strat.onNewCandle = function(candles){
                 all: [{
                     fact: 'resistance',
                     operator: 'greaterThan',
-                    value: HighLow.lvlHigh
+                    value: HighLow.highToBreak
                 }]
             },
             event: {
@@ -67,11 +67,11 @@ strat.onNewCandle = function(candles){
 
 strat.onNewTick = async function(tick){
     if(HighLow.side==='long'){
-        console.log('Actual level to break '+HighLow.lvlHigh+'. Current level '+tick.close);
+        console.log('Actual level to break '+HighLow.highToBreak+'. Current level '+tick.close);
         engine.addFact('resistance', tick.close)
     }
     else if(HighLow.side==='short'){
-        console.log('Actual level to break '+HighLow.lvlLow+'. Current level '+tick.close);
+        console.log('Actual level to break '+HighLow.lowToBreak+'. Current level '+tick.close);
         engine.addFact('support', tick.close)
     }
     
