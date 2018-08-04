@@ -1,22 +1,22 @@
-function indicator(period){
-    this.lvlHigh = 0;
-    this.lvlLow = 0;
-    this.lowToBreak = 0;
-    this.highToBreak = 0;
-    this.maxHigh = 0;
-    this.maxLow = 0;  
-    this.side = null; 
-    this.len = period;
-}
-
-indicator.prototype.setLevels = function(candles){
-    for(var i=candles.length-this.len; i<candles.length; i++){
-        this.updateLevel(candles[i]);
+class indicator{
+    constructor(period){
+        this.lvlHigh = 0;
+        this.lvlLow = 0;
+        this.lowToBreak = 0;
+        this.highToBreak = 0;
+        this.maxHigh = 0;
+        this.maxLow = 0;  
+        this.side = null; 
+        this.len = period;
     }
-    //candles.forEach(element => updateLevel(element));
 }
 
-indicator.prototype.updateLevel = function(element){
+function setLevels(candles){
+    for(var i=candles.length-this.len; i<candles.length; i++)
+        this.updateLevel(candles[i]);    
+}
+
+function updateLevel(element){
 
     if(element.high > this.maxHigh){
         this.maxHigh = element.high;

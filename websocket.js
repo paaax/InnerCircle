@@ -1,23 +1,42 @@
+var Strategy = require('./strategy.js');
+var Helper = require('./helper.js');
+
 const binance = require('node-binance-api')().options({
-    APIKEY: '<key>',
-    APISECRET: '<secret>',
+    APIKEY: '<key>',        //obj.apikey
+    APISECRET: '<secret>',  //obj.apisecret
     useServerTime: true, 
     test: true,
-    verbose: false
-  
-  });
+    verbose: false  
+}); 
 
-var strat = require('./strategy.js');
 var active = false;
+module.exports = {
+    run(obj){  
+        var helper = new Helper();
+        for (const key in obj) {           
+            var strat = obj[key];
+            var pairs = strat.pairs;
 
-binance.websockets.chart("BTCUSDT", "1m", (symbol, interval, chart) => {
-    let tick = binance.last(chart);
-    let ticker = chart[tick];
-    var arr = Object.keys(chart).map(function(k) { return chart[k] });
-    if(!ticker.hasOwnProperty('isFinal')){
-        strat.onNewCandle(arr);
-        active = true;
+            for (const k in pairs) {
+                const pair = pairs[k];   
+
+                // create instances
+                helper.configure(pair);
+
+                // run websocket
+                console.log('obj.pair '+pair.symbol);
+
+                binance.websockets.chart(pair.symbol, obj[key].timeframe, (symbol, interval, chart) => {
+                    let ticker = chart[binance.last(chart)];
+                    var arr = Object.keys(chart).map(function(k) { return chart[k] });
+                    if(!ticker.hasOwnProperty('isFinal')){
+                        helper.onNewCandle(arr);
+                        active = true;
+                    }
+                    if(active)
+                        helper.onNewTick(ticker);
+                });
+            }
+        }
     }
-    if(active)
-        strat.onNewTick(ticker);
-});
+}
