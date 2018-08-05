@@ -52,7 +52,11 @@ var jsonObj = [
                 "condition": "blub",
                 "signal": "do something else"
             }
+<<<<<<< HEAD
         ]              
+=======
+        ]                    
+>>>>>>> ee4e451a5105a30de5da43414d1bff62064fcbef
     }
 ];
 
