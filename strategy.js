@@ -1,12 +1,15 @@
-var ws = require('./websocket.js');
+var Websocket = require('./websocket.js');
 
 class Strategy{
            
     constructor(obj){
         this.name = obj.name,
         this.timeframe = obj.timeframe
-        ws.run(obj);
     }
-    
+
+    run(){        
+        ws = new Websocket();
+        ws.run();
+    }
 }
 module.exports = Strategy;

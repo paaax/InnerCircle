@@ -9,30 +9,29 @@ class indicator{
         this.side = null; 
         this.len = period;
     }
-}
 
-function setLevels(candles){
-    for(var i=candles.length-this.len; i<candles.length; i++)
-        this.updateLevel(candles[i]);    
-}
-
-function updateLevel(element){
-
-    if(element.high > this.maxHigh){
-        this.maxHigh = element.high;
-        this.lowToBreak = this.lvlLow;
-        this.side = 'short';
-    }
-    if(element.low < this.maxLow){
-        this.maxLow = element.low;
-        this.highToBreak = this.lvlHigh;
-        this.side = 'long';
+    setLevels(candles){
+        for(var i=candles.length-this.len; i<candles.length; i++)
+            this.updateLevel(candles[i]);    
     }
 
-    if(element.close > element.open)
-        this.lvlHigh = element.high;
-    else if(element.close < element.open)
-        this.lvlLow = element.low;    
-}
+    updateLevel(element){
 
+        if(element.high > this.maxHigh){
+            this.maxHigh = element.high;
+            this.lowToBreak = this.lvlLow;
+            this.side = 'short';
+        }
+        if(element.low < this.maxLow){
+            this.maxLow = element.low;
+            this.highToBreak = this.lvlHigh;
+            this.side = 'long';
+        }
+
+        if(element.close > element.open)
+            this.lvlHigh = element.high;
+        else if(element.close < element.open)
+            this.lvlLow = element.low;    
+    }
+}
 module.exports = indicator;

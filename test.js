@@ -38,8 +38,23 @@ var jsonObj = [
                     }                    
                 ]
             }
+        ],
+        "riskManagerRules": [
+            {
+                "riskManagerStrat": "rm_strat_1",
+                "operator": "greaterThan",
+                "condition": "blub",
+                "signal": "do something"
+            },
+            {
+                "riskManagerStrat": "rm_strat_2",
+                "operator": "greaterThan",
+                "condition": "blub",
+                "signal": "do something else"
+            }
         ]              
     }
 ];
 
 var strategy = new Strategy(jsonObj);
+strategy.run();
