@@ -8,7 +8,7 @@ class Strategy{
     }
 
     run(){        
-        ws = new Websocket();
+        let ws = new Websocket();
         ws.run();
     }
 }
