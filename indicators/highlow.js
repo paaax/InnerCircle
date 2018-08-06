@@ -1,5 +1,5 @@
-class indicator{
-    constructor(period){
+class highlow{
+    constructor(rulesettings){
         this.lvlHigh = 0;
         this.lvlLow = 0;
         this.lowToBreak = 0;
@@ -7,31 +7,42 @@ class indicator{
         this.maxHigh = 0;
         this.maxLow = 0;  
         this.side = null; 
-        this.len = period;
+        this.len = rulesettings.period;
     }
 
-    setLevels(candles){
+    set(candles){
         for(var i=candles.length-this.len; i<candles.length; i++)
-            this.updateLevel(candles[i]);    
+            this.update(candles[i]);    
     }
 
-    updateLevel(element){
+    update(tick){
 
-        if(element.high > this.maxHigh){
-            this.maxHigh = element.high;
+        if(tick.high > this.maxHigh){
+            this.maxHigh = tick.high;
             this.lowToBreak = this.lvlLow;
             this.side = 'short';
         }
-        if(element.low < this.maxLow){
-            this.maxLow = element.low;
+        if(tick.low < this.maxLow){
+            this.maxLow = tick.low;
             this.highToBreak = this.lvlHigh;
             this.side = 'long';
         }
 
-        if(element.close > element.open)
-            this.lvlHigh = element.high;
-        else if(element.close < element.open)
-            this.lvlLow = element.low;    
+        if(tick.close > tick.open)
+            this.lvlHigh = tick.high;
+        else if(tick.close < tick.open)
+            this.lvlLow = tick.low;   
+
+        if(this.side==='long')
+            var result = this.highToBreak;
+        else
+            var result = this.lowToBreak;
+        
+        return {
+            fact: super.fact,
+            result: this.result,
+            side: this.side
+        }
     }
 }
-module.exports = indicator;
+module.exports = highlow;

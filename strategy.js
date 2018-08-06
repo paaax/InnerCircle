@@ -7,9 +7,9 @@ class Strategy{
         this.timeframe = obj.timeframe
     }
 
-    run(){        
+    run(obj){        
         let ws = new Websocket();
-        ws.run();
+        ws.run(obj);
     }
 }
 module.exports = Strategy;

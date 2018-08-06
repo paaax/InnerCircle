@@ -57,4 +57,4 @@ var jsonObj = [
 ];
 
 var strategy = new Strategy(jsonObj);
-strategy.run();
+strategy.run(jsonObj);

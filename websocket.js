@@ -15,12 +15,10 @@ class Websocket{
         this.active = false;
     }
 
-    run(){  
-        
-        for (const key in this.obj) {           
-            var strat = this.obj[key];
+    run(obj){  
+        for (const key in obj) {           
+            var strat = obj[key];
             var pairs = strat.pairs;
-
             for (const k in pairs) {
                 var signalengine = new SignalEngine();
                 const pair = pairs[k];   
@@ -29,7 +27,7 @@ class Websocket{
                 signalengine.configure(pair);
 
                 // run websocket
-                binance.websockets.chart(pair.symbol, this.obj[key].timeframe, (symbol, interval, chart) => {
+                binance.websockets.chart(pair.symbol, obj[key].timeframe, (symbol, interval, chart) => {
                     let ticker = chart[binance.last(chart)];
                     var arr = Object.keys(chart).map(function(k) { return chart[k] }); //TODO prüfen - kann man vllt auch über JSON lösen
                     if(!ticker.hasOwnProperty('isFinal')){

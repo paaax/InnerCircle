@@ -1,8 +1,11 @@
 var RuleEngine = require('json-rules-engine');
+var Indicator = require('./indicator.js');
 
 class SignalEngine{
     constructor(){
         this.engine = new RuleEngine.Engine(); 
+        this.indicators = [];
+        this.facts = [];
     }
 
     configure(pair){
@@ -18,7 +21,7 @@ class SignalEngine{
             let rule = new RuleEngine.Rule({
                 conditions: {
                     all: [{
-                        fact: rulesettings.indicator,
+                        fact: rulesettings.fact,
                         operator: rulesettings.operator,
                         value: rulesettings.condition
                     }]
@@ -52,19 +55,19 @@ class SignalEngine{
     initIndicators(pair, priceData){
         var rules = pair.rules;
         for (const key in rules) {
-            const rule = rules[key];
-            var Indi = require('./indicators/'+rule.indicator+'.js');   
-            var indicator = new Indi(); //TODO rulesettings aus JSON holen z.B. period
-            this.indicatorList.push(indicator);
-            return indicator.getValue(priceData);
+            const rule = rules[key]; 
+            var indicator = new Indicator(rule.settings);
+            this.indicators.push(indicator);
         }
     }
     
     updateIndicators(tick){
         for (let i = 0; i < this.indicators.length-1; i++) {
             const indicator = this.indicators[i];
-            return indicator.update(tick);            
+            var result = indicator.update(tick);
+            this.engine.addFact(result.fact, result.result);            
         }
+        this.engine.run();
     }
 }
 
