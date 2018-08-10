@@ -1,5 +1,5 @@
 class highlow{
-    constructor(rulesettings){
+    constructor(fact){
         this.lvlHigh = 0;
         this.lvlLow = 0;
         this.lowToBreak = 0;
@@ -7,11 +7,12 @@ class highlow{
         this.maxHigh = 0;
         this.maxLow = 0;  
         this.side = null; 
-        this.len = rulesettings.period;
+        this.input = fact.indicator;
+        this.fact = fact.fact;
     }
 
     set(candles){
-        for(var i=candles.length-this.len; i<candles.length; i++)
+        for(var i=candles.length-this.input.period; i<candles.length; i++)
             this.update(candles[i]);    
     }
 
@@ -22,7 +23,7 @@ class highlow{
             this.lowToBreak = this.lvlLow;
             this.side = 'short';
         }
-        if(tick.low < this.maxLow){
+        if(tick.low < this.maxLow){ //TODO maxLow = 0 <- beheben
             this.maxLow = tick.low;
             this.highToBreak = this.lvlHigh;
             this.side = 'long';
@@ -39,8 +40,8 @@ class highlow{
             var result = this.lowToBreak;
         
         return {
-            fact: super.fact,
-            result: this.result,
+            fact: this.fact,
+            result: result,
             side: this.side
         }
     }

@@ -1,9 +1,9 @@
 class Indicator{
-    constructor(obj){
-        this.name = obj.name;
-        this.fact = obj.fact
-        this.Indi = require('./indicators/'+this.name+'.js');
-        this.indi = new this.Indi(obj);
+    constructor(fact){
+        this.indicator = fact.indicator.name;
+        this.fact = fact.fact;
+        this.Indi = require('./indicators/'+this.indicator+'.js');
+        this.indi = new this.Indi(fact);
     }
 
     set(candle){

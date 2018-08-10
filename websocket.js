@@ -13,31 +13,30 @@ class Websocket{
 
     constructor(obj){
         this.active = false;
+        this.signalengines = [] //TODO weg
     }
 
-    run(obj){  
+    run(obj, pair){  
         for (const key in obj) {           
             var strat = obj[key];
-            var pairs = strat.pairs;
-            for (const k in pairs) {
-                var signalengine = new SignalEngine();
-                const pair = pairs[k];   
+            var signalengine = new SignalEngine();
+            this.signalengines.push(signalengine); //TODO weg
+            signalengine.engine.pair = pair; 
+            signalengine.strat = strat;
+            signalengine.createRuleEngine();
 
-                // create instances
-                signalengine.configure(pair);
-
-                // run websocket
-                binance.websockets.chart(pair.symbol, obj[key].timeframe, (symbol, interval, chart) => {
-                    let ticker = chart[binance.last(chart)];
-                    var arr = Object.keys(chart).map(function(k) { return chart[k] }); //TODO prüfen - kann man vllt auch über JSON lösen
-                    if(!ticker.hasOwnProperty('isFinal')){
-                        signalengine.initIndicators(pair, arr);
-                        this.active = true;
-                    }
-                    if(this.active)
-                        signalengine.updateIndicators(ticker);
-                });
-            }
+            // run websocket
+            binance.websockets.chart(signalengine.engine.pair.symbol, strat.timeframe, (symbol, interval, chart) => {
+                let ticker = chart[binance.last(chart)];
+                console.log(signalengine.engine.pair.symbol+' '+ticker.close)
+                var arr = Object.keys(chart).map(function(k) { return chart[k] }); //TODO prüfen - kann man vllt auch über JSON lösen
+                if(!ticker.hasOwnProperty('isFinal')){
+                    signalengine.initIndicators(arr);
+                    this.active = true;
+                }
+                if(this.active)
+                    signalengine.updateIndicators(ticker);
+            });
         }
     }
 }

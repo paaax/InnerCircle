@@ -5,40 +5,38 @@ var jsonObj = [
         "timeframe": "1m",
         "pairs":[
             {
-                "symbol": "BTCUSDT",
-                "rules": [
-                    {
-                        "indicator": "highlow",
-                        "operator": "greaterThan",
-                        "condition": "exampleLevel",
-                        "signal": "short"
-                    },
-                    {
-                        "indicator": "rsi",
-                        "operator": "greaterThan",
-                        "condition": "20",
-                        "signal": "long"
-                    }                    
-                ]
+                "symbol": "BTCUSDT"
             },
             {
-                "symbol": "ETHUSDT",
-                "rules": [
-                    {
-                        "indicator": "highlow",
-                        "operator": "greaterThan",
-                        "condition": "exampleLevel",
-                        "signal": "short"
-                    },
-                    {
-                        "indicator": "rsi",
-                        "operator": "greaterThan",
-                        "condition": "20",
-                        "signal": "long"
-                    }                    
-                ]
+                "symbol": "ETHUSDT"
             }
         ],
+        "rules": [{
+            "condition": "all",
+            "signal": "long",
+            "facts": [{
+                "indicator": {
+                    "name": "highlow",
+                },
+                "fact": "highlow_short",
+                "operator": "greaterThan",
+                "condition": "exampleLevel",
+            },
+            {
+                "indicator": {
+                    "name": "rsi",
+                    "inputs": [{
+                        "period": "25"
+                    },
+                    {
+                        "period": "25"
+                    }]
+                },
+                "fact": "highlow_long",
+                "operator": "greaterThan",
+                "condition": "20",
+            }]
+        }], 
         "riskManagerRules": [
             {
                 "riskManagerStrat": "rm_strat_1",
