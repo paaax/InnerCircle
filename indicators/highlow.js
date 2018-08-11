@@ -12,8 +12,8 @@ class highlow{
     }
 
     set(candles){
-        for(var i=candles.length-this.input.period; i<candles.length; i++)
-            this.update(candles[i]);    
+        for (const key in candles)
+            this.update(candles[key]);                          
     }
 
     update(tick){

@@ -6,8 +6,8 @@ class Indicator{
         this.indi = new this.Indi(fact);
     }
 
-    set(candle){
-        this.indi.set(candle);
+    set(candles){
+        this.indi.set(candles);
     }
 
     update(tick){

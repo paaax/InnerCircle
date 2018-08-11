@@ -3,18 +3,17 @@ var Websocket = require('./websocket.js');
 class Strategy{
            
     constructor(obj){
-        this.name = obj.name,
-        this.timeframe = obj.timeframe
+        this.name = obj.strategy,
+        this.timeframe = obj.timeframe,
+        this.websockets = []
     }
 
-    run(obj){    
-        for (const key in obj) {           
-            var strat = obj[key];
-            var pairs = strat.pairs;   
-            for (const k in pairs) {
-                let ws = new Websocket();
-                ws.run(obj, pairs[k]);
-            }
+    run(obj){           
+        let pairs = obj[0].pairs;   
+        for (const k in pairs) {
+            let ws = new Websocket();
+            this.websockets.push(ws);
+            ws.run(obj, pairs[k]);
         }
     }
 }

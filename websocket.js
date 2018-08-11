@@ -11,33 +11,32 @@ const binance = require('node-binance-api')().options({
 
 class Websocket{
 
-    constructor(obj){
+    constructor(){
         this.active = false;
-        this.signalengines = [] //TODO weg
     }
 
     run(obj, pair){  
-        for (const key in obj) {           
-            var strat = obj[key];
-            var signalengine = new SignalEngine();
-            this.signalengines.push(signalengine); //TODO weg
-            signalengine.engine.pair = pair; 
-            signalengine.strat = strat;
-            signalengine.createRuleEngine();
+      
+        var strat = obj[0];
+        this.signalengine = new SignalEngine();
+        this.signalengine.engine.pair = pair; 
+        this.signalengine.strat = strat;
+        this.signalengine.createRuleEngine();
 
-            // run websocket
-            binance.websockets.chart(signalengine.engine.pair.symbol, strat.timeframe, (symbol, interval, chart) => {
-                let ticker = chart[binance.last(chart)];
-                console.log(signalengine.engine.pair.symbol+' '+ticker.close)
-                var arr = Object.keys(chart).map(function(k) { return chart[k] }); //TODO prüfen - kann man vllt auch über JSON lösen
-                if(!ticker.hasOwnProperty('isFinal')){
-                    signalengine.initIndicators(arr);
-                    this.active = true;
-                }
-                if(this.active)
-                    signalengine.updateIndicators(ticker);
-            });
-        }
+        // run websocket
+        binance.websockets.chart(this.signalengine.engine.pair.symbol, strat.timeframe, (symbol, interval, chart) => {
+            let ticker = chart[binance.last(chart)];
+            let arr = Object.keys(chart).map(function(k) { return chart[k] }); //TODO prüfen - kann man vllt auch über JSON lösen
+            if(!ticker.hasOwnProperty('isFinal')){
+                this.signalengine.initIndicators(arr);
+                this.active = true;
+            }
+            if(this.active){
+                console.log(this.signalengine.engine.pair.symbol+' '+ticker.close)
+                this.signalengine.updateIndicators(ticker);
+            }
+        });
+
     }
 }
 module.exports = Websocket;
